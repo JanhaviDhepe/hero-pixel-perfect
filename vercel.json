@@ -1,0 +1,15 @@
+{
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "public": true,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/hero-pixel-perfect.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/hero-pixel-perfect.html"
+    }
+  ]
+}
