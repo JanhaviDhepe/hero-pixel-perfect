@@ -306,7 +306,7 @@ nav a:first-child::after {
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
-  margin-left: -100px;
+  margin-left: 60px;
   margin-top: 80px;
 }
 
@@ -356,6 +356,58 @@ nav a:first-child::after {
   height: 80px;
   background: #1a1a1a;
   border-radius: 6px 0 0 6px;
+}
+
+/* CODE MODAL */
+
+.code-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  overflow: auto;
+}
+
+.code-modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.code-container {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  position: relative;
+}
+
+.code-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #404040;
+  color: #d4d4d4;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.code-close-btn:hover {
+  background: #505050;
 }
 
 /* RESPONSIVE */
@@ -416,10 +468,10 @@ nav a:first-child::after {
 
   <div class="top-center">
     <div class="pill-group">
-      <div class="pill active">Preview</div>
-      <div class="pill">Code</div>
+      <div class="pill active" onclick="showPreview()">Preview</div>
+      <div class="pill" onclick="openVSCode()">Code</div>
     </div>
-    <div class="pill-single">Copy <i class="far fa-copy"></i></div>
+    <div class="pill-single" onclick="copyCode()">Copy <i class="far fa-copy"></i></div>
     <div class="pill-single">Demo <i class="fas fa-external-link-alt"></i></div>
   </div>
 
@@ -446,7 +498,7 @@ nav a:first-child::after {
     <i class="fas fa-search"></i>
     <i class="fab fa-facebook-f"></i>
     <i class="fab fa-instagram"></i>
-    <i class="fas fa-phone" style="transform: rotate(45deg);"></i>
+    <i class="fas fa-phone"></i>
     <i class="far fa-envelope"></i>
   </div>
 </header>
@@ -478,6 +530,57 @@ nav a:first-child::after {
 <div class="scrollbar">
   <div class="scrollbar-thumb"></div>
 </div>
+
+<!-- CODE MODAL -->
+<div class="code-modal" id="codeModal">
+  <div class="code-container">
+    <button class="code-close-btn" onclick="closeCodeModal()">Close</button>
+    <pre id="codeContent"></pre>
+  </div>
+</div>
+
+<script>
+function openVSCode() {
+  // Open code modal
+  const codeModal = document.getElementById('codeModal');
+  codeModal.classList.add('active');
+}
+
+function showPreview() {
+  // Hide code modal if open
+  const codeModal = document.getElementById('codeModal');
+  codeModal.classList.remove('active');
+}
+
+function closeCodeModal() {
+  const codeModal = document.getElementById('codeModal');
+  codeModal.classList.remove('active');
+}
+
+function copyCode() {
+  // Copy the HTML code to clipboard
+  const htmlCode = document.documentElement.outerHTML;
+  navigator.clipboard.writeText(htmlCode).then(function() {
+    alert('Code copied to clipboard!');
+  }).catch(function(err) {
+    console.error('Failed to copy code:', err);
+    alert('Failed to copy code');
+  });
+}
+
+// Load and display the HTML code
+document.addEventListener('DOMContentLoaded', function() {
+  const codeContent = document.getElementById('codeContent');
+  codeContent.textContent = document.documentElement.outerHTML;
+});
+
+// Close modal when clicking outside the code container
+document.getElementById('codeModal')?.addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeCodeModal();
+  }
+});
+</script>
 
 </body>
 </html>
